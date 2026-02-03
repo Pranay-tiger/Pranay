@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Be My Valentine</title>
+    <title>For Shreya</title>
     <style>
         body {
             /* Purple and Pink Gradient Background */
@@ -20,25 +20,27 @@
         }
 
         .container {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 30px;
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            max-width: 80%;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 40px;
+            border-radius: 30px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            max-width: 85%;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .shayari {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-style: italic;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             line-height: 1.6;
+            color: #ffe4e1;
         }
 
         h1 {
-            font-size: 2.5rem;
-            margin-bottom: 30px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            font-size: 2.2rem;
+            margin-bottom: 35px;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.4);
         }
 
         .buttons {
@@ -46,44 +48,48 @@
             justify-content: center;
             gap: 20px;
             position: relative;
+            min-height: 60px;
         }
 
         button {
-            padding: 15px 30px;
-            font-size: 1.2rem;
+            padding: 12px 35px;
+            font-size: 1.3rem;
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            transition: 0.3s;
+            transition: all 0.3s ease;
+            font-weight: bold;
         }
 
         #yesBtn {
             background-color: #ff1493;
             color: white;
-            box-shadow: 0 5px 15px rgba(255, 20, 147, 0.4);
+            box-shadow: 0 5px 15px rgba(255, 20, 147, 0.5);
         }
 
         #noBtn {
-            background-color: #eee;
+            background-color: #ffffff;
             color: #333;
             position: relative;
+            z-index: 10;
         }
 
         #successMessage {
             display: none;
             font-size: 2rem;
-            animation: fadeIn 2s;
+            animation: fadeIn 1.5s ease-in-out;
         }
 
         @keyframes fadeIn {
-            from {opacity: 0;}
-            to {opacity: 1;}
+            from {opacity: 0; transform: scale(0.8);}
+            to {opacity: 1; transform: scale(1);}
         }
 
         .flower {
             position: fixed;
-            font-size: 25px;
+            font-size: 28px;
             z-index: 1000;
+            pointer-events: none;
         }
     </style>
 </head>
@@ -97,7 +103,7 @@
             "Tujhse na milkar guzaara kaise ho sakta hai…"
         </div>
         
-        <h1>Will you be my Valentine? ❤️</h1>
+        <h1>Shreya bala, <br>Will you be my Valentine? ❤️</h1>
 
         <div class="buttons">
             <button id="yesBtn" onclick="showLove()">Yes</button>
@@ -106,8 +112,8 @@
     </div>
 
     <div id="successMessage">
-        <h1>Congratulations! 🌸🌼🌷</h1>
-        <p>I Love You! ❤️</p>
+        <h1 style="color: #fff; font-size: 3rem;">Congratulations! 🌸🌼🌷</h1>
+        <p style="font-size: 1.5rem;">Yay! Happy Valentine's Day! ❤️</p>
     </div>
 
     <audio id="romanticSong" loop>
@@ -119,28 +125,28 @@
         const noBtn = document.getElementById('noBtn');
         const song = document.getElementById('romanticSong');
 
-        // Play music on first click anywhere
+        // Play music on first click
         document.body.addEventListener('click', () => {
-            song.play();
+            song.play().catch(e => console.log("Music play blocked"));
         }, { once: true });
 
         function moveNo() {
             noCount++;
             
-            // Random Position
-            const x = Math.random() * (window.innerWidth - 100);
-            const y = Math.random() * (window.innerHeight - 50);
+            // Random Position calculation
+            const x = Math.random() * (window.innerWidth - 120);
+            const y = Math.random() * (window.innerHeight - 60);
             
             noBtn.style.position = 'fixed';
             noBtn.style.left = x + 'px';
             noBtn.style.top = y + 'px';
 
-            // Reduce size and visibility
-            let scale = 1 - (noCount * 0.15);
-            let opacity = 1 - (noCount * 0.15);
+            // Shrink and Fade logic
+            let scale = 1 - (noCount * 0.18);
+            let opacity = 1 - (noCount * 0.18);
             
             if (scale <= 0.1) {
-                noBtn.style.display = 'none'; // Vanish
+                noBtn.style.display = 'none'; // Button disappears completely
             } else {
                 noBtn.style.transform = `scale(${scale})`;
                 noBtn.style.opacity = opacity;
@@ -150,28 +156,33 @@
         function showLove() {
             document.getElementById('mainCard').style.display = 'none';
             document.getElementById('successMessage').style.display = 'block';
-            createFlowers();
+            startFlowerShower();
         }
 
-        function createFlowers() {
-            for (let i = 0; i < 50; i++) {
-                const flower = document.createElement('div');
-                flower.className = 'flower';
-                flower.innerHTML = '🌸';
-                flower.style.left = Math.random() * 100 + 'vw';
-                flower.style.top = '-50px';
-                flower.style.animation = `fall ${Math.random() * 3 + 2}s linear forwards`;
-                document.body.appendChild(flower);
+        function startFlowerShower() {
+            const flowers = ['🌸', '🌼', '🌷', '🌹', '💖'];
+            for (let i = 0; i < 70; i++) {
+                setTimeout(() => {
+                    const flower = document.createElement('div');
+                    flower.className = 'flower';
+                    flower.innerHTML = flowers[Math.floor(Math.random() * flowers.length)];
+                    flower.style.left = Math.random() * 100 + 'vw';
+                    flower.style.top = '-50px';
+                    flower.style.animation = `fall ${Math.random() * 3 + 3}s linear forwards`;
+                    document.body.appendChild(flower);
+                    
+                    // Cleanup
+                    setTimeout(() => flower.remove(), 5000);
+                }, i * 100);
             }
         }
 
-        // CSS Animation for falling flowers
+        // CSS Animation for falling objects
         const style = document.createElement('style');
         style.innerHTML = `
             @keyframes fall {
-                to {
-                    transform: translateY(110vh) rotate(360deg);
-                }
+                0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+                100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
             }
         `;
         document.head.appendChild(style);
