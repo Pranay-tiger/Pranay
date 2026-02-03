@@ -1,116 +1,180 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="mr">
 <head>
-<meta charset="UTF-8">
-<title>Do you love me? 💖</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be My Valentine</title>
+    <style>
+        body {
+            /* Purple and Pink Gradient Background */
+            background: linear-gradient(135deg, #4b0082, #ff69b4, #8a2be2);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            color: white;
+            text-align: center;
+            margin: 0;
+        }
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            max-width: 80%;
+        }
 
-<style>
-body{
-  margin:0;
-  min-height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:#ffdce2;
-  font-family:'Poppins',sans-serif;
-}
-.container{
-  position:relative;
-  width:90%;
-  max-width:400px;
-  background:#ffeef2;
-  padding:30px 20px;
-  border-radius:20px;
-  text-align:center;
-  box-shadow:0 20px 40px rgba(0,0,0,.2);
-}
-h1{
-  font-size:26px;
-  margin-bottom:20px;
-}
-img{
-  width:160px;
-  margin-bottom:15px;
-}
-.buttons{
-  position:relative;
-  height:120px;
-}
-button{
-  padding:12px 26px;
-  font-size:16px;
-  border:none;
-  border-radius:14px; /* rounded square */
-  cursor:pointer;
-  position:absolute;
-}
-#yes{
-  background:#ff4e8a;
-  color:white;
-  left:60px;
-  bottom:10px;
-}
-#no{
-  background:#ffffff;
-  color:#333;
-  right:60px;
-  bottom:10px;
-}
-.final{
-  display:none;
-}
-.final img{
-  width:180px;
-}
-.final h1{
-  font-size:28px;
-}
-</style>
+        .shayari {
+            font-size: 1.2rem;
+            font-style: italic;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            position: relative;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        #yesBtn {
+            background-color: #ff1493;
+            color: white;
+            box-shadow: 0 5px 15px rgba(255, 20, 147, 0.4);
+        }
+
+        #noBtn {
+            background-color: #eee;
+            color: #333;
+            position: relative;
+        }
+
+        #successMessage {
+            display: none;
+            font-size: 2rem;
+            animation: fadeIn 2s;
+        }
+
+        @keyframes fadeIn {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+
+        .flower {
+            position: fixed;
+            font-size: 25px;
+            z-index: 1000;
+        }
+    </style>
 </head>
-
 <body>
 
-<div class="container" id="main">
-  <img src="https://i.imgur.com/6Xb7X6F.png" alt="cute panda">
-  <h1>Do you love me? 💖</h1>
+    <div class="container" id="mainCard">
+        <div class="shayari">
+            "Koi itna pyara kaise ho sakta hai…"<br>
+            "O bhi poora ka poora kaise ho sakta hai…"<br><br>
+            "Tujhse milkar saari udaasi kam ho jaati hai…"<br>
+            "Tujhse na milkar guzaara kaise ho sakta hai…"
+        </div>
+        
+        <h1>Will you be my Valentine? ❤️</h1>
 
-  <div class="buttons">
-    <button id="yes">Yes</button>
-    <button id="no">No</button>
-  </div>
-</div>
+        <div class="buttons">
+            <button id="yesBtn" onclick="showLove()">Yes</button>
+            <button id="noBtn" onmouseover="moveNo()" onclick="moveNo()">No</button>
+        </div>
+    </div>
 
-<div class="container final" id="final">
-  <img src="https://i.imgur.com/8Km9tLL.png" alt="panda hug">
-  <h1>I knew it 😍💖</h1>
-</div>
+    <div id="successMessage">
+        <h1>Congratulations! 🌸🌼🌷</h1>
+        <p>I Love You! ❤️</p>
+    </div>
 
-<!-- Romantic Titanic-vibe violin -->
-<audio id="music" loop>
-  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-14.mp3" type="audio/mpeg">
-</audio>
+    <audio id="romanticSong" loop>
+        <source src="https://www.bensound.com/bensound-music/bensound-love.mp3" type="audio/mpeg">
+    </audio>
 
-<script>
-const noBtn = document.getElementById("no");
-const yesBtn = document.getElementById("yes");
-const music = document.getElementById("music");
+    <script>
+        let noCount = 0;
+        const noBtn = document.getElementById('noBtn');
+        const song = document.getElementById('romanticSong');
 
-noBtn.addEventListener("mouseover",()=>{
-  const x = Math.floor(Math.random()*200);
-  const y = Math.floor(Math.random()*80);
-  noBtn.style.left = x+"px";
-  noBtn.style.bottom = y+"px";
-});
+        // Play music on first click anywhere
+        document.body.addEventListener('click', () => {
+            song.play();
+        }, { once: true });
 
-yesBtn.onclick = ()=>{
-  music.play();
-  document.getElementById("main").style.display="none";
-  document.getElementById("final").style.display="block";
-};
-</script>
+        function moveNo() {
+            noCount++;
+            
+            // Random Position
+            const x = Math.random() * (window.innerWidth - 100);
+            const y = Math.random() * (window.innerHeight - 50);
+            
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
 
+            // Reduce size and visibility
+            let scale = 1 - (noCount * 0.15);
+            let opacity = 1 - (noCount * 0.15);
+            
+            if (scale <= 0.1) {
+                noBtn.style.display = 'none'; // Vanish
+            } else {
+                noBtn.style.transform = `scale(${scale})`;
+                noBtn.style.opacity = opacity;
+            }
+        }
+
+        function showLove() {
+            document.getElementById('mainCard').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'block';
+            createFlowers();
+        }
+
+        function createFlowers() {
+            for (let i = 0; i < 50; i++) {
+                const flower = document.createElement('div');
+                flower.className = 'flower';
+                flower.innerHTML = '🌸';
+                flower.style.left = Math.random() * 100 + 'vw';
+                flower.style.top = '-50px';
+                flower.style.animation = `fall ${Math.random() * 3 + 2}s linear forwards`;
+                document.body.appendChild(flower);
+            }
+        }
+
+        // CSS Animation for falling flowers
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes fall {
+                to {
+                    transform: translateY(110vh) rotate(360deg);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
 </body>
 </html>
