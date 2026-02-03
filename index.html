@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Will You Be My Valentine 💖</title>
+<title>Do you love me? 💖</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
 body{
@@ -14,150 +14,101 @@ body{
   display:flex;
   align-items:center;
   justify-content:center;
-  background:linear-gradient(135deg,#ff9a9e,#fad0c4,#fbc2eb);
+  background:#ffdce2;
   font-family:'Poppins',sans-serif;
 }
-.card{
-  background:rgba(255,255,255,.25);
-  backdrop-filter:blur(14px);
-  padding:30px;
-  border-radius:22px;
+.container{
+  position:relative;
   width:90%;
-  max-width:420px;
+  max-width:400px;
+  background:#ffeef2;
+  padding:30px 20px;
+  border-radius:20px;
   text-align:center;
-  box-shadow:0 25px 50px rgba(0,0,0,.25);
+  box-shadow:0 20px 40px rgba(0,0,0,.2);
 }
-#msg{
-  font-size:20px;
-  min-height:160px;
-  white-space:pre-line;
-  color:#4a0033;
+h1{
+  font-size:26px;
+  margin-bottom:20px;
 }
-h2{
-  font-family:'Great Vibes',cursive;
-  font-size:36px;
-  color:#7a003c;
-  display:none;
-  margin:15px 0;
+img{
+  width:160px;
+  margin-bottom:15px;
 }
-#buttons{
-  display:none;
-  margin-top:10px;
+.buttons{
+  position:relative;
+  height:120px;
 }
 button{
-  padding:10px 28px;
-  font-size:18px;
+  padding:12px 26px;
+  font-size:16px;
   border:none;
-  border-radius:30px;
+  border-radius:14px; /* rounded square */
   cursor:pointer;
-  margin:8px;
+  position:absolute;
 }
 #yes{
-  background:linear-gradient(135deg,#ff4e8a,#ff2e63);
+  background:#ff4e8a;
   color:white;
+  left:60px;
+  bottom:10px;
 }
 #no{
-  background:rgba(255,255,255,.7);
+  background:#ffffff;
   color:#333;
+  right:60px;
+  bottom:10px;
 }
-.panda{
-  font-size:64px;
-  animation:dance 1s infinite alternate;
+.final{
+  display:none;
 }
-@keyframes dance{
-  0%{transform:rotate(-10deg) translateY(0);}
-  100%{transform:rotate(10deg) translateY(-12px);}
+.final img{
+  width:180px;
+}
+.final h1{
+  font-size:28px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="card">
-  <div id="msg"></div>
+<div class="container" id="main">
+  <img src="https://i.imgur.com/6Xb7X6F.png" alt="cute panda">
+  <h1>Do you love me? 💖</h1>
 
-  <h2 id="question">Will you be my Valentine? 💖</h2>
-
-  <div id="buttons">
-    <button id="yes">Yes ❤️</button>
-    <button id="no">No 🙈</button>
+  <div class="buttons">
+    <button id="yes">Yes</button>
+    <button id="no">No</button>
   </div>
 </div>
 
-<!-- Titanic-vibe Romantic Violin (safe) -->
+<div class="container final" id="final">
+  <img src="https://i.imgur.com/8Km9tLL.png" alt="panda hug">
+  <h1>I knew it 😍💖</h1>
+</div>
+
+<!-- Romantic Titanic-vibe violin -->
 <audio id="music" loop>
   <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-14.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-const msgBox=document.getElementById("msg");
-const music=document.getElementById("music");
+const noBtn = document.getElementById("no");
+const yesBtn = document.getElementById("yes");
+const music = document.getElementById("music");
 
-const intro=[
- "Koi itna pyara kaise ho sakta hai…",
- "O bhi poora ka poora kaise ho sakta hai…",
- "",
- "Tujhse milkar saari udaasi kam ho jaati hai…",
- "Tujhse na milkar guzaara kaise ho sakta hai…"
-];
+noBtn.addEventListener("mouseover",()=>{
+  const x = Math.floor(Math.random()*200);
+  const y = Math.floor(Math.random()*80);
+  noBtn.style.left = x+"px";
+  noBtn.style.bottom = y+"px";
+});
 
-let l=0,c=0;
-function typeIntro(){
- if(l<intro.length){
-  if(c<intro[l].length){
-   msgBox.innerHTML+=intro[l][c++];
-   setTimeout(typeIntro,40);
-  }else{
-   msgBox.innerHTML+="\n";
-   l++;c=0;
-   setTimeout(typeIntro,450);
-  }
- }else{
-  setTimeout(()=>{
-   question.style.display="block";
-   buttons.style.display="block";
-  },800);
- }
-}
-window.onload=typeIntro;
-
-let noCount=0;
-const noMsgs=[
- "❌ Ekda punha vichar kar na 😔",
- "❌ Asa nako karu na 😢",
- "❌ Mi kharach sincere ahe 🥺",
- "❌ Thoda sa chance de na 💔",
- "❌ Tu ho mhanशील याची mala khatri ahe 💫"
-];
-
-function typeText(text,target){
- target.innerHTML="";
- let i=0;
- const t=setInterval(()=>{
-  target.innerHTML+=text[i++];
-  if(i>=text.length)clearInterval(t);
- },35);
-}
-
-yes.onclick=()=>{
- music.play();
- msgBox.innerHTML=
- "🎉🎉 CONGRATULATIONS 🎉🎉\n\n"+
- "💖🥰😍 Tu YES mhanalis 💕💞\n"+
- "Mi khup khup happy aahe 😍❤️\n\n"+
- "🐼💃 Panda dance for you 💃🐼\n\n"+
- "✨🎊💐💝";
-};
-
-no.onclick=()=>{
- music.play();
- if(noCount<noMsgs.length){
-  typeText(noMsgs[noCount],no);
-  noCount++;
- }
- if(noCount>=5){
-  no.remove();
- }
+yesBtn.onclick = ()=>{
+  music.play();
+  document.getElementById("main").style.display="none";
+  document.getElementById("final").style.display="block";
 };
 </script>
 
