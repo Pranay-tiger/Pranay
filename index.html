@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Will You Be My Valentine</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #111;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding-top: 15vh;
+    }
+
+    #msg {
+      font-size: 22px;
+      min-height: 160px;
+      padding: 0 15px;
+      white-space: pre-line;
+    }
+
+    h2 {
+      margin-top: 30px;
+      display: none;
+    }
+
+    button {
+      font-size: 20px;
+      padding: 10px 26px;
+      margin: 12px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    #yes {
+      background: #e91e63;
+      color: white;
+    }
+
+    #no {
+      background: #444;
+      color: white;
+    }
+
+    button:disabled {
+      background: #222;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="msg"></div>
+
+  <h2 id="question">Will you be my Valentine? 💖</h2>
+
+  <div id="buttons" style="display:none;">
+    <button id="yes">Yes ❤️</button>
+    <button id="no">No 😐</button>
+  </div>
+
+  <!-- Music -->
+  <audio id="music" loop>
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    const msgBox = document.getElementById("msg");
+    const music = document.getElementById("music");
+
+    /* Shayari lines */
+    const introLines = [
+      "Koi itna pyara kaise ho sakta hai…",
+      "O bhi poora ka poora kaise ho sakta hai…",
+      "",
+      "Tujhse milkar saari udaasi kam ho jaati hai…",
+      "Tujhse na milkar guzaara kaise ho sakta hai…"
+    ];
+
+    let line = 0;
+    let char = 0;
+
+    function typeIntro() {
+      if (line < introLines.length) {
+        if (char < introLines[line].length) {
+          msgBox.innerHTML += introLines[line].charAt(char);
+          char++;
+          setTimeout(typeIntro, 45);
+        } else {
+          msgBox.innerHTML += "\n";
+          line++;
+          char = 0;
+          setTimeout(typeIntro, 500);
+        }
+      } else {
+        setTimeout(() => {
+          document.getElementById("question").style.display = "block";
+          document.getElementById("buttons").style.display = "block";
+        }, 800);
+      }
+    }
+
+    window.onload = typeIntro;
+
+    /* Yes / No logic */
+    let noCount = 0;
+
+    const noMessages = [
+      "❌ Ekda punha vichar kar na 😔",
+      "❌ Asa thodasa difficult hota 😢",
+      "❌ Mi kharach sincere ahe 🥺",
+      "❌ Thoda sa chance de na 💔",
+      "❌ Tu ho mhanशील याची mala khatri ahe 💫"
+    ];
+
+    function typeText(text) {
+      msgBox.innerHTML = "";
+      let i = 0;
+      const t = setInterval(() => {
+        msgBox.innerHTML += text.charAt(i);
+        i++;
+        if (i >= text.length) clearInterval(t);
+      }, 40);
+    }
+
+    document.getElementById("yes").onclick = () => {
+      music.play();
+      typeText(
+        "❤️ Yayyy!\nTu ho mhanalis!\n\nTu mazya sathi khup special ahes 💕\nMi nehmi tula khush thevin 🌸"
+      );
+    };
+
+    document.getElementById("no").onclick = () => {
+      music.play();
+
+      if (noCount < noMessages.length) {
+        typeText(noMessages[noCount]);
+        noCount++;
+      }
+
+      if (noCount >= 5) {
+        document.getElementById("no").disabled = true;
+        setTimeout(() => {
+          typeText("❌ Ata No option band zala 😌");
+        }, 1200);
+      }
+    };
+  </script>
+
+</body>
+</html>
